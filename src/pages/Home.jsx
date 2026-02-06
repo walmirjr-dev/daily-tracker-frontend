@@ -1,12 +1,16 @@
 import { useEffect, useState } from 'react';
 import { api } from '../api/axios';
 import { ChallengeCard } from '../components/ChallengeCard';
-import { CreateChallengeModal } from '../components/ChallengeModal'; 
+import { CreateChallengeModal } from '../components/ChallengeModal';
+import { EditChallengeModal } from '../components/EditChallengeModal'; 
 import { Plus } from 'lucide-react';
 
 export function Home() {
   const [challenges, setChallenges] = useState([]);
-  const [isModalOpen, setIsModalOpen] = useState(false); 
+  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+  
+  // Estado para controlar qual desafio está sendo editado
+  const [editingChallenge, setEditingChallenge] = useState(null); 
 
   async function fetchChallenges() {
     try {
@@ -21,16 +25,34 @@ export function Home() {
     fetchChallenges();
   }, []);
 
+  // Lógica de Exclusão (agora vive na Home)
+  async function handleDeleteChallenge(id) {
+    const confirm = window.confirm("Tem certeza? Isso apagará todo o histórico deste desafio.");
+    if (confirm) {
+      try {
+        await api.delete(`/challenges/${id}`);
+        fetchChallenges(); // Atualiza a lista
+      } catch (error) {
+        alert("Erro ao excluir: " + error.message);
+      }
+    }
+  }
+
   return (
     <div className="w-full max-w-3xl mx-auto px-6 py-16">
-      {/* O Modal vive aqui, mas só aparece se isModalOpen for true */}
+      {/* Modal de CRIAÇÃO */}
       <CreateChallengeModal 
-        isOpen={isModalOpen} 
-        onClose={() => setIsModalOpen(false)}
-        onChallengeCreated={() => {
-          fetchChallenges(); 
-          
-        }}
+        isOpen={isCreateModalOpen} 
+        onClose={() => setIsCreateModalOpen(false)}
+        onChallengeCreated={fetchChallenges}
+      />
+
+      {/* Modal de EDIÇÃO (Só aparece se tiver um desafio selecionado) */}
+      <EditChallengeModal
+        isOpen={!!editingChallenge} // Transforma objeto em booleano (true se tiver objeto)
+        challenge={editingChallenge}
+        onClose={() => setEditingChallenge(null)} // Limpa a seleção ao fechar
+        onChallengeUpdated={fetchChallenges}
       />
 
       <header className="flex items-center justify-between mb-12">
@@ -42,7 +64,7 @@ export function Home() {
         </div>
         
         <button 
-          onClick={() => setIsModalOpen(true)} 
+          onClick={() => setIsCreateModalOpen(true)}
           className="flex items-center gap-2 bg-green-600 hover:bg-green-500 text-white font-semibold px-4 py-2 rounded-lg transition-colors shadow-lg shadow-green-900/20"
         >
           <Plus size={20} />
@@ -52,7 +74,13 @@ export function Home() {
 
       <div className="grid gap-4">
         {challenges.map(challenge => (
-          <ChallengeCard key={challenge.id} data={challenge} />
+          <ChallengeCard 
+            key={challenge.id} 
+            data={challenge}
+            // Passamos as funções para o Card chamar quando clicar no menu
+            onEdit={() => setEditingChallenge(challenge)} 
+            onDelete={() => handleDeleteChallenge(challenge.id)}
+          />
         ))}
         
         {challenges.length === 0 && (
