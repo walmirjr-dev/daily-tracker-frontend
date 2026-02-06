@@ -1,16 +1,40 @@
-# React + Vite
+# 🎨 Daily Tracker - Interface
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+![React](https://img.shields.io/badge/React-18-blue?style=flat&logo=react)
+![Vite](https://img.shields.io/badge/Vite-Fast-646CFF?style=flat&logo=vite)
+![TailwindCSS](https://img.shields.io/badge/Tailwind-CSS-38B2AC?style=flat&logo=tailwindcss)
+![Nginx](https://img.shields.io/badge/Nginx-Docker-009639?style=flat&logo=nginx)
 
-Currently, two official plugins are available:
+Esta é a interface web do **Daily Tracker**, desenvolvida para oferecer uma experiência intuitiva e motivadora no acompanhamento de hábitos diários. O layout foca na visualização rápida do progresso e na facilidade de interação para garantir a consistência do utilizador.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+🔗 **Repositório do Backend (Orquestrador):** [https://github.com/walmirjr-dev/daily-tracker]
 
-## React Compiler
+---
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## ✨ Diferenciais da Interface
 
-## Expanding the ESLint configuration
+- **Visualização Estilo GitHub:** Um visualizador que mostra os checkins feitos por meio de quadrados marcados em verde, lembrando um pouco a interface do GitHub.
+- **Feedback de Progresso:** Gráficos circulares que indicam a percentagem concluída de cada desafio de forma dinâmica.
+- **Identidade Personalizada:** Título e ícone customizados para uma experiência de marca única.
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+---
+
+## 🛠️ Tecnologias e Bibliotecas
+
+- **ReactJS + Vite:** Base do projeto para uma experiência de desenvolvimento rápida e build otimizado.
+- **Tailwind CSS:** Estilização moderna utilizando uma abordagem utility-first.
+- **Axios:** Cliente HTTP para comunicação com a API REST do Backend.
+- **Lucide React:** Conjunto de ícones minimalistas e consistentes.
+- **Day.js:** Biblioteca leve para manipulação, validação e formatação de datas.
+
+---
+
+## 🐳 Execução via Docker (Recomendado)
+
+O Frontend foi configurado para ser servido por um servidor **Nginx** otimizado dentro de um container. Para rodar o sistema completo:
+
+1. Certifica-te de que este repositório está na mesma pasta pai que o repositório do **Backend**.
+2. Acede à pasta do **Backend** pelo terminal.
+3. Executa o comando:
+```bash
+docker-compose up -d --build
