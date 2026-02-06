@@ -54,7 +54,9 @@ export function ChallengeDetails() {
           <p className="text-zinc-400 mt-2">{challenge.daysRemaining} dias restantes</p>
         </div>
         <div className="text-right">
-            <span className="text-2xl font-bold text-green-500">{challenge.progressPercentage}%</span>
+            <span className="text-2xl font-bold text-green-500">
+              {Math.round(challenge.progressPercentage)}%
+              </span>
             <p className="text-zinc-500 text-sm">{challenge.completedCheckIns} de {challenge.durationDays}</p>
         </div>
       </header>
