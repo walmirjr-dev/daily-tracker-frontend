@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { api } from '../lib/axios';
+import { api } from '../api/axios';
 import { ChallengeCard } from '../components/ChallengeCard';
 import { Plus } from 'lucide-react';
 

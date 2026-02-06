@@ -1,6 +1,6 @@
 import { useEffect, useState, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { api } from '../lib/axios';
+import { api } from '../api/axios';
 import { CheckInGrid } from '../components/CheckInGrid';
 import { ArrowLeft, CheckCircle2, Lock } from 'lucide-react';
 
