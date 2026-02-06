@@ -9,7 +9,6 @@ export function ChallengeDetails() {
   const navigate = useNavigate();
   const [challenge, setChallenge] = useState(null);
 
-  // Mantemos o useCallback para que a função seja estável e reutilizável no botão
   const loadChallenge = useCallback(async () => {
     try {
       const response = await api.get(`/challenges/${id}`);
@@ -19,7 +18,6 @@ export function ChallengeDetails() {
     }
   }, [id]);
 
-  // CORREÇÃO AQUI:
   useEffect(() => {
     const fetchData = async () => {
       await loadChallenge();
@@ -50,7 +48,7 @@ export function ChallengeDetails() {
 
       <header className="flex items-center justify-between mb-10">
         <div>
-          <h1 className="text-4xl font-bold">{challenge.name}</h1>
+          <h1 className="text-4xl font-black tracking-tighter text-white">{challenge.name}</h1>
           <p className="text-zinc-400 mt-2">{challenge.daysRemaining} dias restantes</p>
         </div>
         <div className="text-right">
@@ -85,7 +83,8 @@ export function ChallengeDetails() {
 
       <CheckInGrid 
         totalDays={challenge.durationDays} 
-        completedCount={challenge.completedCheckIns} 
+        completedCount={challenge.completedCheckIns}
+        lastCheckInDate={challenge.lastCheckInDate}
       />
     </div>
   );

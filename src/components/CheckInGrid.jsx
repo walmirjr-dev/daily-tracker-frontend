@@ -1,16 +1,29 @@
 import clsx from 'clsx';
 
-export function CheckInGrid({ totalDays, completedCount }) {
-  
+export function CheckInGrid({ totalDays, completedCount, lastCheckInDate }) {
   const days = Array.from({ length: totalDays });
+
+  function formatDate(dateString) {
+    if (!dateString) return "";
+    const [year, month, day] = dateString.split('-');
+    return `${day}/${month}/${year}`;
+  }
 
   return (
     <div className="w-full bg-zinc-900 border border-zinc-800 rounded-xl p-6 mt-6">
-      <h4 className="text-zinc-400 mb-4 font-medium">Progresso Visual</h4>
+      <div className="flex items-center justify-between mb-4">
+        <h4 className="text-zinc-400 font-medium">Progresso Visual</h4>
+        
+        {lastCheckInDate && (
+          <span className="text-zinc-400 font-small">
+            Último checkIn - {formatDate(lastCheckInDate)}
+          </span>
+        )}
+      </div>
       
       <div className="grid grid-cols-[repeat(20,minmax(0,1fr))] gap-2 sm:gap-1.5">
         {days.map((_, index) => {
-          const isCompleted = index < completedCount; 
+          const isCompleted = index < completedCount;
           return (
             <div
               key={index}
