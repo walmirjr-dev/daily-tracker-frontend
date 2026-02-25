@@ -1,8 +1,8 @@
 import { useEffect, useState, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { api } from '../api/axios'; // Mantido seu caminho original
+import { api } from '../api/axios';
 import { CheckInGrid } from '../components/CheckInGrid';
-import { ArrowLeft, CheckCircle2, Lock, RotateCcw } from 'lucide-react'; // Adicionado RotateCcw
+import { ArrowLeft, CheckCircle2, Lock, RotateCcw, Calendar } from 'lucide-react';
 
 export function ChallengeDetails() {
   const { id } = useParams();
@@ -34,19 +34,23 @@ export function ChallengeDetails() {
     }
   }
 
-  // --- NOVA FUNÇÃO DE DESFAZER ---
   async function handleUndoLastCheckIn() {
     const confirm = window.confirm("Tem certeza que deseja apagar o último check-in?");
     
     if (confirm) {
       try {
-        // Rota de desfazer (Delete)
         await api.delete(`/checkins/challenge/${id}/undo`);
         loadChallenge();
       } catch (error) {
         alert("Erro ao desfazer: " + (error.response?.data?.message || "Erro desconhecido"));
       }
     }
+  }
+
+  function formatDate(dateString) {
+    if (!dateString) return '-';
+    const [year, month, day] = dateString.split('-');
+    return `${day}/${month}/${year}`;
   }
 
   if (!challenge) return <div className="p-10 text-zinc-500 text-center">Carregando...</div>;
@@ -65,12 +69,24 @@ export function ChallengeDetails() {
         <div>
           <h1 className="text-4xl font-black tracking-tighter text-white">{challenge.name}</h1>
           <p className="text-zinc-400 mt-2">{challenge.daysRemaining} dias restantes</p>
+          
+          <div className="flex items-center gap-3 mt-3 text-zinc-500 text-sm">
+            <div className="flex items-center gap-1.5">
+              <Calendar size={14} className="text-zinc-600" />
+              <span>Início: <strong className="text-zinc-400">{formatDate(challenge.initialDate)}</strong></span>
+            </div>
+            <span className="text-zinc-700">|</span>
+            <div>
+              <span>Fim: <strong className="text-zinc-400">{formatDate(challenge.endDate)}</strong></span>
+            </div>
+          </div>
         </div>
+
         <div className="text-right">
             <span className="text-2xl font-bold text-green-500">
               {Math.round(challenge.progressPercentage)}%
               </span>
-            <p className="text-zinc-500 text-sm">{challenge.completedCheckIns} de {challenge.durationDays}</p>
+            <p className="text-zinc-500 text-sm">{challenge.completedCheckIns} de {challenge.targetDays}</p>
         </div>
       </header>
 
@@ -97,13 +113,11 @@ export function ChallengeDetails() {
       </button>
 
       <CheckInGrid 
-        totalDays={challenge.durationDays} 
+        totalDays={challenge.targetDays} 
         completedCount={challenge.completedCheckIns}
         lastCheckInDate={challenge.lastCheckInDate}
       />
 
-      {/* --- BOTÃO DE DESFAZER --- */}
-      {/* Só aparece se tiver pelo menos 1 check-in feito */}
       {challenge.completedCheckIns > 0 && (
         <button 
           onClick={handleUndoLastCheckIn}
